@@ -93,12 +93,21 @@ pipeline {
     stage('SonarQube Quality Gate') {
       environment {
             scannerHome = tool 'SonarQubeScanner'
+<<<<<<< HEAD
       }
         steps {
           withSonarQubeEnv('sonarqube') {
                 sh "${scannerHome}/bin/sonar-scanner"
           }
         }
+=======
+        }
+        steps {
+            withSonarQubeEnv('sonarqube') {
+                sh "${scannerHome}/bin/sonar-scanner"
+        }
+      }
+>>>>>>> d22199f37a3420e3beac116558d00cf173cf4045
     }
   }
 }
