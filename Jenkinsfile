@@ -75,7 +75,7 @@ pipeline {
 
         }
     }
-    
+
     stage('Upload Artifact to Artifactory') {
       steps {
         script { 
@@ -98,7 +98,7 @@ pipeline {
 
     stage ('Deploy to Dev Environment') {
       steps {
-        build job: 'ansible-config-mgt/main', parameters: [[$class: 'StringParameterValue', name: 'env', value: 'dev']], propagate: false, wait: true
+        build job: 'ansible-config-mgt/deploy', parameters: [[$class: 'StringParameterValue', name: 'env', value: 'dev']], propagate: false, wait: true
       }
     }
   }
