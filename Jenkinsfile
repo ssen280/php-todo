@@ -65,14 +65,17 @@ pipeline {
     }
     
     stage('SonarQube Quality Gate') {
-      environment {
-          scannerHome = tool 'SonarQubeScanner'
-      }
+      when { branch pattern: "^develop*|^hotfix*|^release*|^main*", comparator: "REGEXP"}
+        environment {
+            scannerHome = tool 'SonarQubeScanner'
+        }
         steps {
-          withSonarQubeEnv('sonarqube') {
-              sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=php-todo -Dsonar.sources=."
-          }
-
+            withSonarQubeEnv('sonarqube') {
+                sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
+            }
+            timeout(time: 1, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+            }
         }
     }
     
