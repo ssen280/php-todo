@@ -71,7 +71,7 @@ pipeline {
         }
         steps {
             withSonarQubeEnv('sonarqube') {
-                sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
+                sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties -Dsonar.projectKey=php-todo"
             }
             timeout(time: 1, unit: 'MINUTES') {
                 waitForQualityGate abortPipeline: true
