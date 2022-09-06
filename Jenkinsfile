@@ -36,7 +36,7 @@ pipeline {
      steps{
          script {
              docker.withRegistry( 'http://'+registry, registryCredentials ) {
-             dockerImage.push('feature-latest')
+             dockerImage.push('developer-latest')
           }
         }
       }
