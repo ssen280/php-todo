@@ -4,7 +4,7 @@ pipeline {
     environment {
         imageName = "php-todo"
         registryCredentials = "nexus"
-        registry = "54.162.107.209:8083"
+        registry = "54.162.107.209:8083/repository/DOCKER-HOSTED-P-20"
         dockerImage = ''
     }
 
