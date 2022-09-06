@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        imageName = "PHP-TODO"
+        imageName = "php-todo"
         registryCredentials = "nexus"
         registry = "54.162.107.209:8083"
         dockerImage = ''
