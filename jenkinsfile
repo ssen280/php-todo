@@ -1,19 +1,21 @@
-pipeline {
+   pipeline {
     agent any
 
   stages {
-
-     stage("Initial cleanup") {
-          steps {
-            dir("${WORKSPACE}") {
-              deleteDir()
-            }
-          }
-        }
-
-    stage('Checkout SCM') {
+    stage('Build') {
       steps {
-            git branch: 'main', url: 'https://github.com/ssen280/php-todo.git'
+        script {
+          sh 'echo "Building Stage"'
+        }
       }
     }
-    
+
+    stage('Test') {
+      steps {
+        script {
+          sh 'echo "Testing Stage"'
+        }
+      }
+    }
+    }
+}
