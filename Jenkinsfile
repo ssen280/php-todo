@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         imageName = "php-todo"
-        registryCredentials = "nexus"
+        registryCredentials = "nexus-new"
         registry = "54.208.101.39:8083"
         dockerImage = ''
     }
