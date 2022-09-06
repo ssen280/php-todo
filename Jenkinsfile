@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     environment {
         imageName = "php-todo"
         registryCredentials = "nexus-new"
@@ -23,43 +23,17 @@ pipeline {
             git branch: 'main', url: 'https://github.com/ssen280/php-todo.git'
       }
     }
-   stage('Build For Staging Environment') {
-            when {
-                expression { BRANCH_NAME ==~ /(staging|develop)/ }
-            }
-        steps {
-            echo 'Build Dockerfile....'
-            script {
-                sh("eval \$(aws ecr get-login --no-include-email --region us-east-1 | sed 's|https://||')") 
-                // sh "docker build --network=host -t $IMAGE -f deploy/docker/Dockerfile ."
-                sh "docker build --network=host -t $IMAGE ."
-                docker.withRegistry("https://$ECRURL"){
-                docker.image("$IMAGE").push("dev-staging-$BUILD_NUMBER")
-                }
-            }
+    // Building Docker images
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build imageName
         }
+      }
     }
-
-
-    stage('Build For Production Environment') {
-        when { tag "release-*" }
-        steps {
-            echo 'Build Dockerfile....'
-            script {
-                sh("eval \$(aws ecr get-login --no-include-email --region us-east-1 | sed 's|https://||')") 
-                // sh "docker build --network=host -t $IMAGE -f deploy/docker/Dockerfile ."
-                sh "docker build --network=host -t $IMAGE ."
-                docker.withRegistry("https://$ECRURL"){
-                docker.image("$IMAGE").push("prod-$BUILD_NUMBER")
-                }
-            }
-        }
-    }
-  }
-
     // Uploading Docker images into Nexus Registry
     stage('Uploading to Nexus') {
-     steps{  
+     steps{
          script {
              docker.withRegistry( 'http://'+registry, registryCredentials ) {
              dockerImage.push('latest')
@@ -68,4 +42,4 @@ pipeline {
       }
     }
   }
-
+}
